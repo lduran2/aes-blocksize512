@@ -1,61 +1,64 @@
 /**
  * ./state.js
- * Defines StateArray as the state array with variable column height
- * and newStateArray4 as the state array with a fixed column height of
- * 4.
- * for: aes-blocksize512
- * date: 2018-10-15 T00:10
+ * Operations on state arrays
+ * for: <https://github.com/lduran2/aes-blocksize512>
+ * date: 2018-10-21 T00:30
+ * by: Leomar Durán <https://github.com/lduran2>
  */
 
-/**
+'use strict';
+
+/******************************************************************//**
+ * Executes the function given by &func on each element of the @state
+ * array
  * @params
- *   input := input text
-	 *   Nb := number of columns, or 32-bit words
- * @return a new state array with the given input text and a column height of 4 rows
+ *   @state :byte[] = state array on whose elements to execute the
+ *     function
+ *   &func :function<byte,int,int,byte[],byte[][]> = the function to
+ *     execute on the elements of the @state array
  */
-exports.newStateArray4 = (plaintext, Nb) => {
-	return new exports.StateArray(4, plaintext, Nb);
-} /* end function newStateArray4(string) */
+exports.forEach = ((state, func) => (
+	state.map((row, iRow, rows) => (
+		row.map((el, iCol, row) => (
+			func(el, iRow, iCol, row, rows)))
+		)
+	)
+));
 
-/*
- * StateArray block class.
+/******************************************************************//**
+ * @params
+ *   @input :byte[] = input text
+ *   $Nb :int = number of columns, or 32-bit words
+ * @return a state array representation of the given flat array with
+ * column height 4
+ * @see #toStateArray
  */
-exports.StateArray = class {
-	/**
-	 * Creates a new state array with the given input text and the given column height
-	 * @params
-	 *   colHeight := the column height, or, number of rows per column
-	 *   input := input text
-	 *   Nb := number of columns, or 32-bit words
-	 * @return a new state array
-	 */
-	constructor(colHeight, input, Nb) {
-		this.colHeight = colHeight;
-		this.input = input;
-		this.Nb = Nb;
-	} /* end #constructure(int, int, int) */
+exports.toStateArray4 = ((input, Nb) => exports.toStateArray(4, input, Nb));
 
-	/**
-	 * @params
-	 *   r := row number
-	 *   c := column number
-	 * @return the byte at the row and column given by @(r, c).
-	 */
-	get(r, c) {
-		return this.input[r + (this.colHeight*c)];
-	} /* end #get(int, int) */
+/******************************************************************//**
+ * @params
+ *   $colHeight :int = the column height, or, number of rows per column
+ *   @input :byte[] = input text
+ *   $Nb :int = number of columns, or 32-bit words
+ * @return a state array representation of the given flat array with
+ * the column height given by $colHeight and $Nb columns
+ */
+exports.toStateArray = ((colHeight, input, Nb) => {
+	let result = [];
+	for (let r = 0; (r < colHeight); ++r) {
+		result[r] = [];
+		for (let c = 0; (c < Nb); ++c) {
+			result[r][c] = input[r + (colHeight*c)];
+		} /* next c */
+	} /* next r */
+	return result;
+}/* end #toStateArray(int, byte[], int) */);
 
-	/**
-	 * @return a flat array representation of the state array
-	 */
-	toFlatArray() {
-		let arr = [];
-		let nCols = this.Nb;
-		for (let iRow = 0; (iRow < this.colHeight); ++iRow) {
-			for (let iCol = 0; (iCol < nCols); ++iCol) {
-				arr.push(this.get(iRow, iCol));
-			} /* next iCol */
-		} /* next iRow */
-		return arr;
-	} /* end #toArray() */
-} /* end class StateArray */
+/******************************************************************//**
+ * @params
+ *   @input :byte[][] = the state array
+ * @return a flat array representation of the state array
+ */
+exports.toFlatArray = ((input) => [].concat(...input));
+
+/* end ./state.js */
