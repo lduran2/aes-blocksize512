@@ -1,0 +1,22 @@
+/**
+ * ./byte.js
+ * Defines a byte and its operations according to the AES standard.
+ * for: <https://github.com/lduran2/aes-blocksize512>
+ * date: 2018-10-16 T14:19
+ * by: Leomar Durán <https://github.com/lduran2>
+ */
+ 
+'use strict';
+
+const bytes = require('./bytes.js')
+const ints = require('./ints.js')
+
+console.log(`{${ints.toHexString(0x57, 2)}}+{${ints.toHexString(0x83, 2)}}`
+	+ `={${ints.toHexString(bytes.add(0x57, 0x83), 2)}}`);
+console.log(`xtimes{${ints.toHexString(0x57)}}={${ints.toHexString(bytes.xtimes(0x57))}}`);
+console.log(`xtimes{${ints.toHexString(bytes.xtimes(0x57))}}`
+	+ `={${ints.toHexString(bytes.xtimes(bytes.xtimes(0x57)))}}`);
+console.log(`{${ints.toHexString(0x57, 2)}}.{${ints.toHexString(0x13, 2)}}`
+	+ `={${ints.toHexString(bytes.mul(0x57, 0x13), 2)}}`);
+console.log(`{${ints.toHexString(0x57, 2)}}.{${ints.toHexString(0x83, 2)}}`
+	+ `={${ints.toHexString(bytes.mul(0x57, 0x83), 2)}}`);
