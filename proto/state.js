@@ -9,23 +9,6 @@
 'use strict';
 
 /******************************************************************//**
- * Executes the function given by &func on each element of the @state
- * array
- * @params
- *   @state :byte[] = state array on whose elements to execute the
- *     function
- *   &func :function<byte,int,int,byte[],byte[][]> = the function to
- *     execute on the elements of the @state array
- */
-exports.forEach = ((state, func) => (
-	state.map((row, iRow, rows) => (
-		row.map((el, iCol, row) => (
-			func(el, iRow, iCol, row, rows)))
-		)
-	)
-));
-
-/******************************************************************//**
  * @params
  *   @input :byte[] = input text
  *   $Nb :int = number of columns, or 32-bit words
@@ -53,6 +36,23 @@ exports.toStateArray = ((colHeight, input, Nb) => {
 	} /* next r */
 	return result;
 }/* end #toStateArray(int, byte[], int) */);
+
+/******************************************************************//**
+ * Executes the function given by &func on each element of the @state
+ * array
+ * @params
+ *   @state :byte[] = state array on whose elements to execute the
+ *     function
+ *   &func :function<byte,int,int,byte[],byte[][]> = the function to
+ *     execute on the elements of the @state array
+ */
+exports.forEach = ((state, func) => (
+	state.map((row, iRow, rows) => (
+		row.map((el, iCol, row) => (
+			func(el, iRow, iCol, row, rows)))
+		)
+	)
+));
 
 /******************************************************************//**
  * @params

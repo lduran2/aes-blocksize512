@@ -10,7 +10,7 @@
 
 'use strict';
 
-const state = require('./state.js');
+const stateArray = require('./state.js');
 
 /* the input plaintext */
 const text = [ 0, 4,  8, 12,
@@ -18,7 +18,7 @@ const text = [ 0, 4,  8, 12,
                2, 6, 10, 14,
                3, 7, 11, 15];
 
-console.log(state.toStateArray4(text, 4));
-console.log(state.toFlatArray(state.toStateArray4(text, 4)));
+console.log(stateArray.toStateArray4(text, 4));
+console.log(stateArray.toFlatArray(state.toStateArray4(text, 4)));
 
 /* end ./state-test */

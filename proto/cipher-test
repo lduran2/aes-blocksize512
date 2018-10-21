@@ -4,18 +4,18 @@
  * ./cipher-test
  * Test the cipher transformation
  * for: <https://github.com/lduran2/aes-blocksize512>
- * date: 2018-10-21 T00:26
+ * date: 2018-10-21 T00:48
  * by: Leomar Durán <https://github.com/lduran2>
  */
 
 'use strict';
 
-const state = require('./state.js');
+const stateArray = require('./state.js');
 const cipher = require('./cipher.js');
 const ints = require('./ints.js');
 
 /* the input plaintext */
-const text = state.toStateArray4(
+const text = stateArray.toStateArray4(
 	[ 0, 4,  8, 12,
 	  1, 5,  9, 13,
 	  2, 6, 10, 14,
@@ -24,26 +24,46 @@ const text = state.toStateArray4(
 );
 
 console.log('Test subBytes:')
-console.log(state.forEach(text, ((el, _0, _1, _2, _3) => (ints.toHexString(el, 2)))));
+console.log(hexStateArray(text));
 console.log();
-console.log(state.forEach(cipher.subBytes(text), ((el, _0, _1, _2, _3) => (ints.toHexString(el, 2)))));
+console.log(hexStateArray(cipher.subBytes(text)));
 console.log();
 console.log();
 
 
 /*********************************************************************/
 
-const shiftArr = state.toStateArray4(
+const shiftArr = stateArray.toStateArray4(
 	[ '00', '10', '20', '30',
 	  '01', '11', '21', '31',
 	  '02', '12', '22', '32',
 	  '03', '13', '23', '33' ],
 	4
-)
+);
 
 console.log('Test shiftRows:');
 console.log(shiftArr);
 console.log();
-cipher.shiftRows(4, shiftArr, 4);
+cipher.shiftRows4(shiftArr, 4);
 console.log(shiftArr);
+console.log();
 
+const mixColumnArr = stateArray.toStateArray4(
+	[ 0xDB, 0xF2, 0xC6, 0xD4,
+	  0x13, 0x0A, 0xC6, 0xD4,
+	  0x53, 0x22, 0xC6, 0xD4,
+	  0x45, 0x5C, 0xC6, 0xD5,
+	],
+	4
+);
+
+console.log('Test mixColumns:');
+console.log(hexStateArray(mixColumnArr));
+console.log();
+console.log(hexStateArray(cipher.mixColumns4(mixColumnArr, 4)));
+
+function hexStateArray(state) {
+	return stateArray.forEach(state, ((el, _0, _1, _2, _3) => (ints.toHexString(el, 2))));
+}
+
+/* end ./cipher-test */

@@ -29,7 +29,7 @@ exports.toHexString = ((i, width) => {
 	} /* next k */
 	/* join the elements */
 	return hexits.join('');
-});
+}/* end #toHexString(int, int) */);
 
 /* array of possible hex-digits */
 const possibleHexits = [
