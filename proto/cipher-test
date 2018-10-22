@@ -4,7 +4,7 @@
  * ./cipher-test
  * Test the cipher transformation
  * for: <https://github.com/lduran2/aes-blocksize512>
- * date: 2018-10-21 T00:48
+ * date: 2018-10-21 T22:59
  * by: Leomar Durán <https://github.com/lduran2>
  */
 
@@ -63,7 +63,7 @@ console.log();
 console.log(hexStateArray(cipher.mixColumns4(mixColumnArr, 4)));
 
 function hexStateArray(state) {
-	return stateArray.forEach(state, ((el, _0, _1, _2, _3) => (ints.toHexString(el, 2))));
+	return stateArray.map(state, ((el, _0, _1, _2, _3) => (ints.toHexString(el, 2))));
 }
 
 /* end ./cipher-test */

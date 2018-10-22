@@ -2,7 +2,7 @@
  * ./state.js
  * Operations on state arrays
  * for: <https://github.com/lduran2/aes-blocksize512>
- * date: 2018-10-21 T00:30
+ * date: 2018-10-21 T22:59
  * by: Leomar Durán <https://github.com/lduran2>
  */
 
@@ -38,15 +38,15 @@ exports.toStateArray = ((colHeight, input, Nb) => {
 }/* end #toStateArray(int, byte[], int) */);
 
 /******************************************************************//**
- * Executes the function given by &func on each element of the @state
- * array
+ * Creates a new state array by mapping the elements of the state array
+ * given by @state by applying the specified function
  * @params
- *   @state :byte[] = state array on whose elements to execute the
- *     function
+ *   @state :byte[] = state array on whose elements to map
  *   &func :function<byte,int,int,byte[],byte[][]> = the function to
- *     execute on the elements of the @state array
+ *     apply on each element, its row and column indices, the
+ *     corresponding row array and the state array
  */
-exports.forEach = ((state, func) => (
+exports.map = ((state, func) => (
 	state.map((row, iRow, rows) => (
 		row.map((el, iCol, row) => (
 			func(el, iRow, iCol, row, rows)))
